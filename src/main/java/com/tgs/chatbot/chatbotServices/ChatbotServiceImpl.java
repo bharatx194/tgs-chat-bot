@@ -17,6 +17,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tgs.chatbot.dbmodel.request.ChatGptRequest;
 import com.tgs.chatbot.dbmodel.request.GetBookingDetails;
 import com.tgs.chatbot.dbmodel.response.ChatGptResponse;
+import com.tgs.chatbot.helperUtils.ChatGptModels;
 import com.tgs.chatbot.helperUtils.HttpHelperUtils;
 
 @Service
@@ -36,6 +37,7 @@ public class ChatbotServiceImpl implements ChatbotService {
 		HttpPost request = new HttpPost("https://api.openai.com/v1/chat/completions");
 		request.setHeader("Authorization", "Bearer " + apiKey);
 		request.setHeader("Content-Type", "application/json");
+		chatGptRequest.setModel(ChatGptModels.CHAT_REQUEST_COMPLETIONS);
 		String requestBody = mapper.writeValueAsString(chatGptRequest);
 		request.setEntity(new StringEntity(requestBody, StandardCharsets.UTF_8));
 		HttpResponse response = client.execute(request);
@@ -60,6 +62,7 @@ public class ChatbotServiceImpl implements ChatbotService {
 		String newContent = "Just fetch and return only the bookingid(Characters limit - 20) from - " + question
 				+ ". The response should only contain the bookingid without any irrevalent text.";
 		chatGptRequest.getMessages().get(0).setContent(newContent);
+		chatGptRequest.setModel(ChatGptModels.CHAT_REQUEST_COMPLETIONS);
 		String requestBody = mapper.writeValueAsString(chatGptRequest);
 		request.setEntity(new StringEntity(requestBody, StandardCharsets.UTF_8));
 		HttpResponse response = client.execute(request);
