@@ -1,7 +1,5 @@
 package com.tgs.chatbot.dbmodel.request;
 
-import java.util.List;
-
 import com.tgs.chatbot.helperUtils.ChatGptModels;
 
 import lombok.AllArgsConstructor;
@@ -13,22 +11,22 @@ import lombok.NoArgsConstructor;
 @Builder
 @AllArgsConstructor
 @NoArgsConstructor
-public class ChatGptRequest {
-
-	private List<Messages> messages;
-
+public class TripJackModelChat {
+	
 	private String model;
 	
-	private Double temperature;
+	private String prompt;
 	
 	private Long max_tokens;
 	
-	public void setModel(String model) {
-		this.model = model;
+	private Double temperature;
+	
+	public void setModel(ChatGptModels chatGptModels) {
+		this.model = chatGptModels.getChatGptModel();
 	}
 	
-	public void setModel(ChatGptModels chatGptModel) {
-		this.model = chatGptModel.getChatGptModel();
+	public void setModel(String model) {
+		this.model = model;
 	}
 
 }

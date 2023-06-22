@@ -6,7 +6,15 @@ public enum ChatGptModels {
 	
 	CHAT_MODERATION("text-moderation-001"),
 	
-	CHAT_EDIT("text-davinci-edit-001");
+	CHAT_EDIT("text-davinci-edit-001"),
+	
+	BABBAGE("text-babbage-001"),
+	
+	DAVINCI("text-davinci-001"),
+	
+	CURIE("text-curie-001"),
+	
+	TRIPJACK_MODEL("curie:ft-tripjack-2023-06-21-15-46-47");
 	
 	private String chatGptModel;
 	
