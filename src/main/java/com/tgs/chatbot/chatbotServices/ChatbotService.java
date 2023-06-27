@@ -10,7 +10,8 @@ public interface ChatbotService {
 	public Object generalChat(ChatGptRequest chatRequest) throws Exception;
 
 	public Object chatRequest(ChatGptRequest chatRequest, HttpServletRequest httpServletRequest) throws Exception;
-	
-	public Object tripjackModelChat(TripJackModelChat tripjackModelChat, HttpServletRequest hHttpServletRequest) throws Exception;
+
+	public Object tripjackModelChat(TripJackModelChat tripjackModelChat, HttpServletRequest hHttpServletRequest)
+			throws Exception;
 
 }

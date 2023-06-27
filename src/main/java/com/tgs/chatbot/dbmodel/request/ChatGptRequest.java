@@ -18,15 +18,15 @@ public class ChatGptRequest {
 	private List<Messages> messages;
 
 	private String model;
-	
+
 	private Double temperature;
-	
+
 	private Long max_tokens;
-	
+
 	public void setModel(String model) {
 		this.model = model;
 	}
-	
+
 	public void setModel(ChatGptModels chatGptModel) {
 		this.model = chatGptModel.getChatGptModel();
 	}

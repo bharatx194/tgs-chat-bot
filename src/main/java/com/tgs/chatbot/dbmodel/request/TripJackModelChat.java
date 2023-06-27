@@ -21,6 +21,8 @@ public class TripJackModelChat {
 	
 	private Double temperature;
 	
+	private String suffix;
+	
 	public void setModel(ChatGptModels chatGptModels) {
 		this.model = chatGptModels.getChatGptModel();
 	}

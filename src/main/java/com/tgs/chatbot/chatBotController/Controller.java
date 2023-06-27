@@ -38,18 +38,18 @@ public class Controller {
 		responseStatus.setResponse(chatbotService.chatRequest(chatRequest, httpServletRequest));
 		return responseStatus;
 	}
-	
+
 	@PostMapping("/tripjackModelChat")
-	public BaseResponse tripjackModelChat(@RequestBody TripJackModelChat tripJackModelChat, HttpServletRequest httpServletRequest)
-			throws Exception {
+	public BaseResponse tripjackModelChat(@RequestBody TripJackModelChat tripJackModelChat,
+			HttpServletRequest httpServletRequest) throws Exception {
 		BaseResponse responseStatus = new BaseResponse(SystemError.OK);
 		responseStatus.setResponse(chatbotService.tripjackModelChat(tripJackModelChat, httpServletRequest));
 		return responseStatus;
 	}
-	
+
 	@PostMapping("/tripjackModelChatGeneral")
-	public BaseResponse tripjackModelChatGeneral(@RequestBody TripJackModelChat tripJackModelChat, HttpServletRequest httpServletRequest)
-			throws Exception {
+	public BaseResponse tripjackModelChatGeneral(@RequestBody TripJackModelChat tripJackModelChat,
+			HttpServletRequest httpServletRequest) throws Exception {
 		BaseResponse responseStatus = new BaseResponse(SystemError.OK);
 		responseStatus.setResponse(chatbotService.tripjackModelChatGeneral(tripJackModelChat, httpServletRequest));
 		return responseStatus;

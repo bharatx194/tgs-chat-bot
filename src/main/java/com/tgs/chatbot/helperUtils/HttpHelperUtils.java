@@ -24,7 +24,8 @@ public class HttpHelperUtils {
 
 	protected static String apiKey = "31744955059537e-95d5-4111-991c-be6b91b7b35b";
 
-	public static String postContent(HttpUrls url, String data, HttpServletRequest httpServletRequest) throws Exception {
+	public static String postContent(HttpUrls url, String data, HttpServletRequest httpServletRequest)
+			throws Exception {
 
 		CloseableHttpClient httpClient = HttpClients.createDefault();
 		HttpPost post = new HttpPost(url.getUrl());
@@ -58,8 +59,7 @@ public class HttpHelperUtils {
 			throws Exception {
 		ObjectMapper mapper = new ObjectMapper().configure(DeserializationFeature.FAIL_ON_UNKNOWN_PROPERTIES, false);
 		String data = mapper.writeValueAsString(getBookingDetails).toString();
-		String response = HttpHelperUtils.postContent(HttpUrls.BOOKING_DETAILS,
-				data, httpServletRequest);
+		String response = HttpHelperUtils.postContent(HttpUrls.BOOKING_DETAILS, data, httpServletRequest);
 		Object res = mapper.readValue(response, Object.class);
 		return res;
 	}
