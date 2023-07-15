@@ -24,7 +24,7 @@ public class Controller {
 		this.chatbotService = chatbotService;
 	}
 
-	@PostMapping("/generatChat")
+	@PostMapping("/rateGenerate")
 	public BaseResponse generatChat(@RequestBody ChatGptRequest chatRequest) throws Exception {
 		BaseResponse responseStatus = new BaseResponse(SystemError.OK);
 		responseStatus.setResponse(chatbotService.generalChat(chatRequest));

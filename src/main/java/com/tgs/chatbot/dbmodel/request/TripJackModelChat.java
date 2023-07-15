@@ -1,7 +1,6 @@
 package com.tgs.chatbot.dbmodel.request;
 
 import com.tgs.chatbot.helperUtils.ChatGptModels;
-
 import lombok.AllArgsConstructor;
 import lombok.Builder;
 import lombok.Data;

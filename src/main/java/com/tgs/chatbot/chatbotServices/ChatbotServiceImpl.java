@@ -1,10 +1,10 @@
 package com.tgs.chatbot.chatbotServices;
 
 import java.nio.charset.StandardCharsets;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.concurrent.Callable;
-
 import javax.servlet.http.HttpServletRequest;
-
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.client.HttpClient;
@@ -14,7 +14,6 @@ import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Service;
-
 import com.fasterxml.jackson.databind.DeserializationFeature;
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.tgs.chatbot.dbmodel.request.ChatGptRequest;
@@ -41,16 +40,21 @@ public class ChatbotServiceImpl implements ChatbotService {
 		HttpPost request = new HttpPost("https://api.openai.com/v1/chat/completions");
 		request.setHeader("Authorization", "Bearer " + apiKey);
 		request.setHeader("Content-Type", "application/json");
-		chatGptRequest.setModel(ChatGptModels.CHAT_REQUEST_COMPLETIONS);
+		chatGptRequest.setModel(ChatGptModels.CHAT_REQUEST_COMPLETIONS_TURBO);
+		String ratingFactors = new String(
+				Files.readAllBytes(Paths.get("/Users/bharatjoshi/Downloads/RatingFactors.txt"))),
+				chat = new String(Files.readAllBytes(Paths.get("/Users/bharatjoshi/Downloads/Chat4.txt")));
+		String newContent = "Here is the converstion between an agent an a customer : " + chat
+				+ "Analyse the chat in depth and rate the agent in all the mentioned factors seperately out of 100(without explanations) and also give an overall rating out of 100 : - "
+				+ ratingFactors + ". Also write a suggestion or remark for the agent One liner";
+		chatGptRequest.getMessages().get(0).setContent(newContent);
 		String requestBody = mapper.writeValueAsString(chatGptRequest);
 		request.setEntity(new StringEntity(requestBody, StandardCharsets.UTF_8));
 		HttpResponse response = client.execute(request);
 		HttpEntity entity = response.getEntity();
 		String responseBody = EntityUtils.toString(entity, StandardCharsets.UTF_8);
-		ObjectMapper objectMapper = new ObjectMapper();
-		Object jsonObject = objectMapper.readValue(responseBody, Object.class);
-
-		return jsonObject;
+		ChatGptResponse jsonObject = mapper.readValue(responseBody, ChatGptResponse.class);
+		return formatResponseCheck(jsonObject.getChoicesList().get(0).getMessage().getContent());
 
 	}
 
@@ -172,12 +176,6 @@ public class ChatbotServiceImpl implements ChatbotService {
 
 	}
 
-	public String formatResponse(String response) {
-		response = response.replaceAll("(\\n|\\r)", "");
-		response = response.replaceAll("\\\\", "");
-		return response;
-	}
-
 	public Object tripjackModelChatGeneral(TripJackModelChat tripjackModelChat, HttpServletRequest httpServletRequest)
 			throws Exception {
 
@@ -188,15 +186,27 @@ public class ChatbotServiceImpl implements ChatbotService {
 		request.setEntity(new StringEntity(mapper.writeValueAsString(tripjackModelChat)));
 		HttpResponse response = client.execute(request);
 		String responseBody = EntityUtils.toString(response.getEntity(), StandardCharsets.UTF_8);
-		Object gptResponse = mapper.readValue(responseBody, Object.class);
-		
-		return gptResponse;
+		TripJackModelResponse gptResponse = mapper.readValue(responseBody, TripJackModelResponse.class);
+		return formatResponse(gptResponse.getChoices().get(0).getText());
+	}
+
+	public String formatResponse(Object res) {
+		String response = (String)res;
+		response = response.replaceAll("(\\n|\\r)", "");
+		response = response.replaceAll("\\\\", "");
+		return response;
+	}
+	
+	public String formatResponseCheck(Object res) {
+		String response = (String)res;
+		response = response.replaceAll("(\\n|\\r)", ", ");
+		response = response.replaceAll("\\\\", "");
+		return response;
 	}
 
 	class Task implements Callable<Boolean> {
 
 		private String storedQuestion, question;
-
 		private ChatGptRequest chatRequest;
 
 		public Task(String storedQuestion, String question, ChatGptRequest chatRequest) {
@@ -207,13 +217,11 @@ public class ChatbotServiceImpl implements ChatbotService {
 
 		@Override
 		public Boolean call() throws Exception {
-
 			if (checkSimilarity(storedQuestion, question, chatRequest)) {
 				return true;
 			}
 			return false;
 		}
-
 	}
 
 }
