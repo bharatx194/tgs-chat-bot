@@ -39,8 +39,6 @@ dependencies {
 		annotationProcessor "org.springframework.boot:spring-boot-configuration-processor"
 		implementation group: 'org.springframework', name: 'spring-oxm', version: '3.0.0.RELEASE'
 		implementation 'org.apache.httpcomponents:httpclient:4.5.13'
-		implementation 'edu.stanford.nlp:stanford-corenlp:4.2.2'
-    	implementation 'edu.stanford.nlp:stanford-corenlp:4.2.2:models'
 }
 
 tasks.named('test') {
